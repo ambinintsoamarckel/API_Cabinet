@@ -17,6 +17,8 @@ use App\Controller\ApiPlatform\MeController;
 use App\DataPersister\UserDataPersister;
 use Doctrine\ORM\Mapping\Id;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
@@ -27,7 +29,7 @@ openapiContext:['security' => [['JWT'=> []]]])]
 #[Post(openapiContext:['security' => [['JWT'=> []]]], uriTemplate:'/user',processor: UserDataPersister::class)]
 
 #[GetCollection(
-openapiContext:['security' => [['JWT'=> []]]],
+    openapiContext:['security' => [['JWT'=> []]]],
 paginationItemsPerPage: 10)]
 #[Patch(openapiContext:['security' => [['JWT'=> []]]],processor: UserDataPersister::class)]
 #[Delete()]
@@ -36,6 +38,7 @@ paginationItemsPerPage: 10)]
 #[ApiFilter(SearchFilter::class, properties: ['uuid'=>'partial','telephone'=>'partial','email'=>'partial','adresse'=>'exact'])]
 #[ApiFilter(OrderFilter::class, properties: ['createdat' => 'DESC'])] */
 
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
     

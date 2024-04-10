@@ -13,6 +13,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: MedicamentsRepository::class)]
 #[ApiResource( 
@@ -24,6 +26,7 @@ use ApiPlatform\Metadata\Delete;
 #[Delete(uriTemplate:'medicaments/{id}')]
 #[GetCollection(paginationItemsPerPage: 10, uriTemplate:'medicaments')]
 #[Patch(uriTemplate:'medicaments/{id}')]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Medicaments
 {
     #[ORM\Id]

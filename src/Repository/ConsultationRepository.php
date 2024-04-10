@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Consultation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,4 +46,21 @@ class ConsultationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function consultationsParMois()
+    {
+        $entityManager = $this->getEntityManager();
+    
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('consultation', 'consultation');
+        $rsm->addScalarResult('mois', 'mois');
+    
+        $query = $entityManager->createNativeQuery('
+            SELECT MONTH(c.date) as mois, COUNT(*) as consultation
+            FROM consultation c
+            WHERE  YEAR(c.date) = YEAR(CURRENT_DATE())
+            GROUP BY mois
+            order BY mois
+        ', $rsm);
+        return $query->getScalarResult();
+    }
 }

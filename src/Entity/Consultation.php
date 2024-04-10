@@ -14,6 +14,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use App\Controller\ApiPlatform\ConsultationParMois;
 
 #[ORM\Entity(repositoryClass: ConsultationRepository::class)]
 #[ApiResource( 
@@ -24,7 +27,9 @@ use ApiPlatform\Metadata\Delete;
 #[Post()]
 #[Delete()]
 #[GetCollection(paginationItemsPerPage: 10)]
+#[Get(name:'Consultation par mois',uriTemplate:'/consultation/parmois',controller:ConsultationParMois::class,read: false)]
 #[Patch()]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Consultation
 {
     #[ORM\Id]

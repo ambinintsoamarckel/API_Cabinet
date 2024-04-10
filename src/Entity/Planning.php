@@ -15,6 +15,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: PlanningRepository::class)]
 #[ApiResource( 
@@ -26,7 +28,8 @@ use ApiPlatform\Metadata\Delete;
 #[Delete()]
 #[GetCollection(paginationItemsPerPage: 10)]
 #[Patch()]
-class Planning
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
+    class Planning
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

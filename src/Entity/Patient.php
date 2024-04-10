@@ -15,7 +15,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 #[ApiResource( 
     normalizationContext: ['groups'=>['getcollection:Pat']],
@@ -26,8 +28,9 @@ use ApiPlatform\Metadata\Delete;
 #[Delete()]
 #[GetCollection(paginationItemsPerPage: 10)]
 #[Patch()]
-/* #[ApiFilter(SearchFilter::class, properties:['vendeur'=>'exact'])]
-#[ApiFilter(OrderFilter::class, properties: ['datecom' => 'DESC'])] */
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
+#[ApiFilter(SearchFilter::class, properties:['nom'=>'partial','telephone'=>'partial'])]
+/*#[ApiFilter(OrderFilter::class, properties: ['datecom' => 'DESC'])] */
 
 
 class Patient
