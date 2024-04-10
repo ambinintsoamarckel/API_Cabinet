@@ -6,39 +6,74 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use App\Controller\ApiPlatform\MeController;
+use App\DataPersister\UserDataPersister;
+use Doctrine\ORM\Mapping\Id;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ApiResource(normalizationContext: ['groups'=>['getcollection:user']],denormalizationContext:['groups'=>['getcollection:user']])]
+#[Get(openapiContext:['security' => [['JWT'=> []]]])]
+#[Get( name: 'me', uriTemplate:'/me',read: false,controller:MeController::class,
+openapiContext:['security' => [['JWT'=> []]]])]
+#[Post(openapiContext:['security' => [['JWT'=> []]]], uriTemplate:'/user',processor: UserDataPersister::class)]
+
+#[GetCollection(
+openapiContext:['security' => [['JWT'=> []]]],
+paginationItemsPerPage: 10)]
+#[Patch(openapiContext:['security' => [['JWT'=> []]]],processor: UserDataPersister::class)]
+#[Delete()]
+
+/*#[Patch(denormalizationContext: ['groups'=>['password']],processor: UserDataPersister::class,uriTemplate:"/reset/{id}")]
+#[ApiFilter(SearchFilter::class, properties: ['uuid'=>'partial','telephone'=>'partial','email'=>'partial','adresse'=>'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['createdat' => 'DESC'])] */
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getcollection:user'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['getcollection:user'])]
     private ?string $username = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['getcollection:user'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 10, unique: true)]
+    #[Groups(['getcollection:user'])]
     private ?string $telephone = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
+    public function SetId(int $id): void
+    {
+        $this->id=$id;
+    }
     public function getUsername(): ?string
     {
         return $this->username;
@@ -120,4 +155,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public static function createFromPayload( $id, array $payload)
+    {
+        $user=new User();
+        $user->setId($id);
+        $user->setUsername($payload['username']);
+        $user->setRoles($payload['roles']);
+         
+        return $user;
+    }
+
 }
