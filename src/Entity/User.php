@@ -26,7 +26,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 #[Get(openapiContext:['security' => [['JWT'=> []]]])]
 #[Get( name: 'me', uriTemplate:'/me',read: false,controller:MeController::class,
 openapiContext:['security' => [['JWT'=> []]]])]
-#[Post(openapiContext:['security' => [['JWT'=> []]]], uriTemplate:'/user',processor: UserDataPersister::class)]
+#[Post(openapiContext:['security' => [['JWT'=> []]]], uriTemplate:'/users',processor: UserDataPersister::class)]
 
 #[GetCollection(
     openapiContext:['security' => [['JWT'=> []]]],

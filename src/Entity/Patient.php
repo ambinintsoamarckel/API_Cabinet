@@ -38,36 +38,34 @@ class Patient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getcollection:Pat','post:pat'])]
+    #[Groups(['getcollection:Pat','post:pat','getcollection:cst'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getcollection:Pat','post:pat'])]
+    #[Groups(['getcollection:Pat','post:pat','getcollection:cst'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getcollection:Pat','post:pat'])]
+    #[Groups(['getcollection:Pat','post:pat','getcollection:cst'])]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['getcollection:Pat','post:pat'])]
-    private ?\DateTimeInterface $dateDeNaissance = null;
-
     #[ORM\Column(length: 10,unique: true)]
-    #[Groups(['getcollection:Pat','post:pat'])]
+    #[Groups(['getcollection:Pat','post:pat','getcollection:cst'])]
     private ?string $telephone = null;
 
     #[ORM\Column]
-    #[Groups(['getcollection:Pat','post:pat'])]
+    #[Groups(['getcollection:Pat','post:pat','getcollection:cst'])]
     private ?bool $sexe = null;
 
     #[ORM\OneToMany(targetEntity: Rendezvous::class, mappedBy: 'patient')]
-    #[Groups(['getcollection:Pat'])]
     private Collection $rendezvous;
 
     #[ORM\OneToMany(targetEntity: Consultation::class, mappedBy: 'patient')]
-    #[Groups(['getcollection:Pat'])]
     private Collection $consultations;
+
+    #[ORM\Column]
+    #[Groups(['getcollection:Pat','post:pat'])]
+    private ?int $age = null;
 
     public function __construct()
     {
@@ -102,18 +100,6 @@ class Patient
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getDateDeNaissance(): ?\DateTimeInterface
-    {
-        return $this->dateDeNaissance;
-    }
-
-    public function setDateDeNaissance(\DateTimeInterface $dateDeNaissance): static
-    {
-        $this->dateDeNaissance = $dateDeNaissance;
 
         return $this;
     }
@@ -198,6 +184,18 @@ class Patient
                 $consultation->setPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): static
+    {
+        $this->age = $age;
 
         return $this;
     }

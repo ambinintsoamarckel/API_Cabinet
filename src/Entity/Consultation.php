@@ -16,19 +16,20 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\Put;
 use App\Controller\ApiPlatform\ConsultationParMois;
+use App\Controller\ApiPlatform\Modifcons;
 
 #[ORM\Entity(repositoryClass: ConsultationRepository::class)]
 #[ApiResource( 
     normalizationContext: ['groups'=>['getcollection:cst']],
     denormalizationContext: ['groups'=>['post:cst','post:med']],
     openapiContext:['security' => [['JWT'=> []]]])]
-#[Get()]
+#[Get(normalizationContext: ['groups'=>['get:cst','post:med']],)]
 #[Post()]
 #[Delete()]
 #[GetCollection(paginationItemsPerPage: 10)]
 #[Get(name:'Consultation par mois',uriTemplate:'/consultation/parmois',controller:ConsultationParMois::class,read: false)]
-#[Patch()]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Consultation
 {
@@ -55,13 +56,9 @@ class Consultation
     #[Groups(['getcollection:cst','post:cst'])]
     private ?string $diagnostic = null;
 
-    #[ORM\OneToMany(targetEntity: Medicaments::class, mappedBy: 'consultation', cascade: ['all'])]
-    #[Groups(['getcollection:cst','post:cst'])]
+    #[ORM\OneToMany(targetEntity: Medicaments::class, mappedBy: 'consultation', cascade: ['all'],orphanRemoval:true)]
+    #[Groups(['get:cst','post:cst'])]
     private Collection $medicaments;
-
-    #[ORM\Column]
-    #[Groups(['getcollection:cst','post:cst'])]
-    private ?int $totalPaye = null;
 
     public function __construct()
     {
@@ -138,6 +135,12 @@ class Consultation
 
         return $this;
     }
+    public function removeAllMedicaments(): void
+    {
+        $this->medicaments->clear();
+        
+
+    }
 
     public function removeMedicament(Medicaments $medicament): static
     {
@@ -151,15 +154,5 @@ class Consultation
         return $this;
     }
 
-    public function getTotalPaye(): ?int
-    {
-        return $this->totalPaye;
-    }
 
-    public function setTotalPaye(int $totalPaye): static
-    {
-        $this->totalPaye = $totalPaye;
-
-        return $this;
-    }
 }

@@ -41,9 +41,9 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
     access_control:
-         - { path: ^/api/consultations, roles: ROLE_ADMIN  }     
-         - { path: ^/api/medicaments, roles: ROLE_ADMIN  }
-         - { path: ^/api/, roles: ROLE_USER }
+         - { path: ^/api/consultations, roles: PUBLIC_ACCESS  }     
+         - { path: ^/api/medicaments, roles: PUBLIC_ACCESS  }
+         - { path: ^/api/, roles: PUBLIC_ACCESS }
  
 
 when@test:
