@@ -29,7 +29,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[GetCollection(paginationItemsPerPage: 10)]
 #[Patch()]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
-#[ApiFilter(SearchFilter::class, properties:['nom'=>'partial','telephone'=>'partial'])]
+#[ApiFilter(SearchFilter::class, properties:['nom'=>'partial','telephone'=>'partial','prenom'=>'partial'])]
 /*#[ApiFilter(OrderFilter::class, properties: ['datecom' => 'DESC'])] */
 
 

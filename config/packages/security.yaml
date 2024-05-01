@@ -30,7 +30,7 @@ security:
                 target: /api
             login_throttling:
                 max_attempts: 3         
-                interval: '10 minutes'
+                interval: '5 minutes'
         main:
             json_login:
                 check_path: /authenticator_token
@@ -41,9 +41,11 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
     access_control:
+         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
          - { path: ^/api/consultations, roles: ROLE_USER  }     
          - { path: ^/api/medicaments, roles: ROLE_USER  }
          - { path: ^/api/, roles: ROLE_USER }
+
  
 
 when@test:

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,11 +34,7 @@ openapiContext:['security' => [['JWT'=> []]]])]
 paginationItemsPerPage: 10)]
 #[Patch(openapiContext:['security' => [['JWT'=> []]]],processor: UserDataPersister::class)]
 #[Delete()]
-
-/*#[Patch(denormalizationContext: ['groups'=>['password']],processor: UserDataPersister::class,uriTemplate:"/reset/{id}")]
-#[ApiFilter(SearchFilter::class, properties: ['uuid'=>'partial','telephone'=>'partial','email'=>'partial','adresse'=>'exact'])]
-#[ApiFilter(OrderFilter::class, properties: ['createdat' => 'DESC'])] */
-
+#[ApiFilter(SearchFilter::class, properties: ['username'=>'partial','telephone'=>'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
