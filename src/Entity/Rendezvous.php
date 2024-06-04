@@ -23,7 +23,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 #[Get(uriTemplate:'rendezvous/{id}')]
 #[Post(uriTemplate:'rendezvous')]
 #[Delete(uriTemplate:'rendezvous/{id}')]
-#[GetCollection(paginationItemsPerPage: 10,uriTemplate:'rendezvous')]
+#[GetCollection(uriTemplate:'rendezvous')]
 #[Patch(uriTemplate:'rendezvous/{id}')]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Rendezvous

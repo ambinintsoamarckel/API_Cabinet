@@ -30,8 +30,7 @@ openapiContext:['security' => [['JWT'=> []]]])]
 #[Post(openapiContext:['security' => [['JWT'=> []]]], uriTemplate:'/users',processor: UserDataPersister::class)]
 
 #[GetCollection(
-    openapiContext:['security' => [['JWT'=> []]]],
-paginationItemsPerPage: 10)]
+    openapiContext:['security' => [['JWT'=> []]]])]
 #[Patch(openapiContext:['security' => [['JWT'=> []]]],processor: UserDataPersister::class)]
 #[Delete()]
 #[ApiFilter(SearchFilter::class, properties: ['username'=>'partial','telephone'=>'partial'])]

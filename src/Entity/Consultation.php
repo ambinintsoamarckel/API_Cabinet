@@ -29,7 +29,7 @@ use App\Controller\ApiPlatform\Modifcons;
 #[Get(normalizationContext: ['groups'=>['get:cst','post:med']],)]
 #[Post()]
 #[Delete()]
-#[GetCollection(paginationItemsPerPage: 10)]
+#[GetCollection()]
 #[Get(name:'Consultation par mois',uriTemplate:'/consultation/parmois',controller:ConsultationParMois::class,read: false)]
 #[ApiFilter(SearchFilter::class,properties: ['patient.nom'=>'partial','patient.telephone'=>'partial','patient.prenom'=>'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]

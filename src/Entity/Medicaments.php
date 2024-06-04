@@ -24,7 +24,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 #[Get(uriTemplate:'medicaments/{id}')]
 #[Post(uriTemplate:'medicaments')]
 #[Delete(uriTemplate:'medicaments/{id}')]
-#[GetCollection(paginationItemsPerPage: 10, uriTemplate:'medicaments')]
+#[GetCollection( uriTemplate:'medicaments')]
 #[Patch(uriTemplate:'medicaments/{id}')]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Medicaments

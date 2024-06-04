@@ -26,7 +26,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[Get()]
 #[Post()]
 #[Delete()]
-#[GetCollection(paginationItemsPerPage: 10)]
+#[GetCollection()]
 #[Patch()]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 #[ApiFilter(SearchFilter::class, properties:['nom'=>'partial','telephone'=>'partial','prenom'=>'partial'])]

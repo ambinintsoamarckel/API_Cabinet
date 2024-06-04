@@ -26,7 +26,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 #[Get()]
 #[Post()]
 #[Delete()]
-#[GetCollection(paginationItemsPerPage: 10)]
+#[GetCollection()]
 #[Patch()]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
     class Planning
