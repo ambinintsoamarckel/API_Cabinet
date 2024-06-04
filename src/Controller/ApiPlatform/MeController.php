@@ -26,7 +26,9 @@ class MeController extends AbstractController
                 $userData = [
 
                     'username' => $user->getUserIdentifier(),
-                    'roles'=> $user->getRoles()
+                    'roles'=> $user->getRoles(),
+                    'id'=> $user->getId(),
+                    'telephone'=> $user->getTelephone()
 
                     // Ajoutez d'autres propriétés que vous souhaitez inclure
                 ];

@@ -160,6 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         $user->setId($id);
         $user->setUsername($payload['username']);
         $user->setRoles($payload['roles']);
+        $user->setTelephone($payload['telephone']);
          
         return $user;
     }
